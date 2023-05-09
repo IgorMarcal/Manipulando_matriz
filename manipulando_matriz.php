@@ -140,104 +140,97 @@
 
 	$a = new Matriz();
 
-	if($matriz1Final==null || $matriz2Final ==null){
-		header('Location: index.php?error');
-	}else{
-		$arquivo = fopen('arquivo.hd', 'r');
+	$arquivo = fopen('arquivo.hd', 'r');
 
-		$matrizes = array();
-		$novaMatriz = array();
-		$linha = 0;
+	$matrizes = array();
+	$novaMatriz = array();
+	$linha = 0;
 
-		while(!feof($arquivo)){
+	while(!feof($arquivo)){
 
-			$registro = fgets($arquivo);
-			$registro_detalhes = explode('-', $registro);
-			$itens = count($registro_detalhes);
-			$controlador = ($itens/2)-1;
+		$registro = fgets($arquivo);
+		$registro_detalhes = explode('-', $registro);
+		$itens = count($registro_detalhes);
+		$controlador = ($itens/2)-1;
 
-			if($linha>0){
+		if($linha>0){
 
-				$novaMatriz = array ();
+			$novaMatriz = array ();
+			for($j = 0; $j < $itens; $j++){
+				$novaMatriz[$j] = array ();
+				for($k = 0; $k < $controlador; $k++){
+					$novaMatriz[$j][$k] = 0;
+				}
+			}
+
+			for($i = 0; $i < $itens; $i++){
+				$valores = explode(',',$registro_detalhes[$i]);
 				for($j = 0; $j < $itens; $j++){
-					$novaMatriz[$j] = array ();
-					for($k = 0; $k < $controlador; $k++){
-						$novaMatriz[$j][$k] = 0;
+					if(isset($valores[$j])){
+						echo "<pre>";
+						($novaMatriz[$i][$j] = $valores[$j]);
+						echo "</pre>";
+
 					}
-				}
-
-				for($i = 0; $i < $itens; $i++){
-					$valores = explode(',',$registro_detalhes[$i]);
-					for($j = 0; $j < $itens; $j++){
-						if(isset($valores[$j])){
-							echo "<pre>";
-							($novaMatriz[$i][$j] = $valores[$j]);
-							echo "</pre>";
-
-						}
-					}	
-				}
-				
-				echo "<pre>";
-				(array_push($matrizes, $novaMatriz));
-				echo "</pre>";
-
+				}	
 			}
-			$linha++;
-			$controlador2=0;
-			for ($i=0; $i < count($matrizes); $i++) { 
-				# code...
+			
+			echo "<pre>";
+			(array_push($matrizes, $novaMatriz));
+			echo "</pre>";
 
-				for ($j=0; $j < count($matrizes[$i]) ; $j++) { 
-					$controlador2++;
-					
-
-					for($k = 0; $k < $controlador; $k++){
-						if($j<=1){
-							echo "<pre>";
-							($m1[$j][$k] = $matrizes[$i][$j]);
-							echo "</pre>";
-
-
-						}else if($j>1){
-							echo "<pre>";
-							($m2[$i][$j] = $matrizes[$i][$j]);
-							echo "</pre>";
-						}
-					}
-				}
-			}
 		}
-
-		$matriz1_corr = array();
-		for ($i=0; $i < count($m1); $i++) { 
+		$linha++;
+		$controlador2=0;
+		for ($i=0; $i < count($matrizes); $i++) { 
 			# code...
-			for ($j=0; $j < count($m1) ; $j++) { 
-				# code...
-				if(isset($m1[$i][$j])){
-					 $matriz1_corr[$i][$j] = $m1[$i][$j];
-				}
+
+			for ($j=0; $j < count($matrizes[$i]) ; $j++) { 
+				$controlador2++;
 				
+
+				for($k = 0; $k < $controlador; $k++){
+					if($j<=1){
+						echo "<pre>";
+						($m1[$j][$k] = $matrizes[$i][$j]);
+						echo "</pre>";
+
+
+					}else if($j>1){
+						echo "<pre>";
+						($m2[$i][$j] = $matrizes[$i][$j]);
+						echo "</pre>";
+					}
+				}
 			}
 		}
+	}
 
-		$matriz1Final = array();
-		foreach ($matriz1_corr as $inner_array) {
-		    foreach ($inner_array as $value) {
-		        $matriz1Final[] = $value;
-		    }
+	$matriz1_corr = array();
+	for ($i=0; $i < count($m1); $i++) { 
+		# code...
+		for ($j=0; $j < count($m1) ; $j++) { 
+			# code...
+			if(isset($m1[$i][$j])){
+				 $matriz1_corr[$i][$j] = $m1[$i][$j];
+			}
+			
 		}
+	}
 
-		$matriz2Final = array();
-		foreach ($m2 as $inner_array) {
-		    foreach ($inner_array as $value) {
-		        $matriz2Final[] = $value;
-		    }
-		}
-		}
+	$matriz1Final = array();
+	foreach ($matriz1_corr as $inner_array) {
+	    foreach ($inner_array as $value) {
+	        $matriz1Final[] = $value;
+	    }
+	}
 
-
-	
+	$matriz2Final = array();
+	foreach ($m2 as $inner_array) {
+	    foreach ($inner_array as $value) {
+	        $matriz2Final[] = $value;
+	    }
+	}
 
 	
 ?>
